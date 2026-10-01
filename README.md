@@ -28,6 +28,7 @@ chemistry-review-notes/
 │   ├── WORKFLOW.md              # 从 PPT 到最终 PDF 的完整工作流
 │   ├── REVIEW_CHECKLIST.md      # 多轮审查与最终收尾门槛
 │   ├── STYLE_GUIDE.md           # 题型、文字、LaTeX 与化学结构排版规范
+│   ├── EXAMPLE_STUDY.md         # 新章节如何学习旧章例子而不机械复制
 │   └── LESSONS_LEARNED.md       # 从已完成章节总结出的经验与反例
 ├── templates/
 │   ├── chapter-plan.md          # 每章讨论/设计记录模板
@@ -36,7 +37,8 @@ chemistry-review-notes/
     ├── alkanes-cycloalkanes/
     │   └── README.md
     └── stereochemistry/
-        └── README.md
+        ├── README.md
+        └── layout-snippets.tex   # Fischer/Newman/表格等可复用排版片段
 ```
 
 ## 当前基准
@@ -52,3 +54,8 @@ chemistry-review-notes/
 核心原则：
 
 > **少复述，多输出；少抽象定义，多具体结构；少花哨框，多清晰表格；不怕页数长，只怕结构看不清。**
+
+
+## 使用原则
+
+这个仓库是后续化学整理的**权威规范来源**。新对话不需要依赖聊天记忆，也不需要重新解释以前的要求；先读取这里的规范和例子，再处理新 PPT。
