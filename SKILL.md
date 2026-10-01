@@ -310,6 +310,24 @@ PPT 没写完整名称但考试能力需要时，应补出来。
 
 ---
 
+## 11A. 新章节开始前：学习旧例子
+
+开始新章 LaTeX 设计前，必须读取：
+- `docs/EXAMPLE_STUDY.md`
+- `examples/alkanes-cycloalkanes/README.md`
+- `examples/stereochemistry/README.md`
+
+并先提炼“可迁移设计”，而不是复制旧章内容。至少回答：
+- 本章有哪些题型可以沿用？
+- 哪些地方需要完整命名？
+- 哪些结构视觉风险最高？
+- 哪些用户疑惑需要就地嵌入？
+- 哪些旧章错误绝不能再犯？
+
+这一轮完成后，才开始写完整 LaTeX。
+
+---
+
 ## 12. 风格基准
 
 参考：
