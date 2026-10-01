@@ -1,0 +1,83 @@
+% Reusable layout snippets learned from stereochemistry v5.2
+% These are design references, not a complete chapter source.
+
+\usepackage[version=4]{mhchem}
+\usepackage{chemfig}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows.meta,positioning}
+\usepackage{booktabs,tabularx,array}
+
+% Practice / answer dual-mode
+\newif\ifanswers
+\ifdefined\ANSWERS\answerstrue\else\answersfalse\fi
+
+\newcommand{\A}[2][2.3cm]{%
+  \ifanswers #2\else\rule{#1}{0.4pt}\fi
+}
+
+% Fischer projection: top, bottom, left, right
+\newcommand{\Fischer}[4]{%
+\begin{tikzpicture}[baseline=-0.55ex,scale=.58]
+  \draw[line width=.72pt] (0,-1.15)--(0,1.15);
+  \draw[line width=.72pt] (-1.15,0)--(1.15,0);
+  \node[above] at (0,1.15) {#1};
+  \node[below] at (0,-1.15) {#2};
+  \node[left] at (-1.15,0) {#3};
+  \node[right] at (1.15,0) {#4};
+\end{tikzpicture}}
+
+% Two-center Fischer
+\newcommand{\FischerTwo}[6]{%
+\begin{tikzpicture}[baseline=-0.5ex,scale=.54]
+  \draw[line width=.72pt] (0,-1.85)--(0,1.85);
+  \draw[line width=.72pt] (-1.0,.62)--(1.0,.62);
+  \draw[line width=.72pt] (-1.0,-.62)--(1.0,-.62);
+  \node[above] at (0,1.85) {#1};
+  \node[left] at (-1.0,.62) {#2};
+  \node[right] at (1.0,.62) {#3};
+  \node[left] at (-1.0,-.62) {#4};
+  \node[right] at (1.0,-.62) {#5};
+  \node[below] at (0,-1.85) {#6};
+\end{tikzpicture}}
+
+% Newman: front top/left/right, back upper-right/upper-left/bottom
+\newcommand{\Newman}[6]{%
+\begin{tikzpicture}[baseline=-0.55ex,scale=.62]
+  \draw[line width=.8pt] (0,0) circle (.47);
+  \fill (0,0) circle (1.3pt);
+  \foreach \ang/\lab in {90/#1,210/#2,330/#3}{
+    \draw[line width=.72pt] (0,0)--(\ang:.94);
+    \node at (\ang:1.20){\lab};
+  }
+  \foreach \ang/\lab in {30/#4,150/#5,270/#6}{
+    \draw[line width=.72pt] (\ang:.47)--(\ang:.99);
+    \node at (\ang:1.22){\lab};
+  }
+\end{tikzpicture}}
+
+% Recommended pattern for structure -> CIP -> R/S -> full name
+\begin{tabularx}{\linewidth}{>{\centering\arraybackslash}m{3.0cm} X c X}
+\toprule
+结构 & 优先顺序 & 构型 & 完整名称 / 结论\\
+\midrule
+\Fischer{\ce{CH3}}{\ce{C2H5}}{H}{OH}
+& \A[4cm]{\ce{OH > C2H5 > CH3 > H}}
+& \A[1cm]{R}
+& \A[4cm]{(R)-丁-2-醇}\\
+\bottomrule
+\end{tabularx}
+
+% Important layout lesson for four-option structure questions:
+% If a 4-column layout makes labels collide, use a 2x2 grid or fixed-width minipages.
+\begin{tabular}{cc}
+\begin{minipage}{.45\linewidth}\centering A\\[2mm] <structure A>\end{minipage}
+&
+\begin{minipage}{.45\linewidth}\centering B\\[2mm] <structure B>\end{minipage}
+\\[5mm]
+\begin{minipage}{.45\linewidth}\centering C\\[2mm] <structure C>\end{minipage}
+&
+\begin{minipage}{.45\linewidth}\centering D\\[2mm] <structure D>\end{minipage}
+\end{tabular}
+
+% Rule: render the final PDF and inspect visually.
+% A successful compile does NOT guarantee a readable chemical structure.
