@@ -11,6 +11,9 @@
 - `docs/REVIEW_CHECKLIST.md`
 - `docs/STYLE_GUIDE.md`
 - `docs/LESSONS_LEARNED.md`
+- `docs/EXAMPLE_STUDY.md`
+- `examples/alkanes-cycloalkanes/README.md`
+- `examples/stereochemistry/README.md`
 
 并把这些内容作为本次化学复习资料整理的长期规范。
 
@@ -36,3 +39,6 @@
 - 只有我明确说可以收尾时，才视为本章完成。
 
 在我要求生成初稿前，优先和我逐页讨论并积累整理决策。
+
+
+在开始生成本章 LaTeX 前，请先做一次“旧例子学习”：提炼可迁移的题型、版式、易错点处理和视觉审查经验，但不要机械复制上一章的章节结构或化学内容。
