@@ -1,0 +1,29 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[margin=23mm]{geometry}
+\usepackage[version=4]{mhchem}
+\usepackage{graphicx,amsmath,booktabs}
+\setCJKmainfont{Noto Serif CJK SC}
+\newif\ifanswers
+\ifdefined\ANSWERS\answerstrue\else\answersfalse\fi
+\newcommand{\Mol}[2][2.8cm]{\raisebox{-.48\height}{\includegraphics[width=#1]{assets/#2.pdf}}}
+\begin{document}
+\section*{烯烃练习：两种不同的输出动作}
+\subsection*{一、真实结构 $\rightarrow$ 完整名称}
+\noindent\begin{tabular}{@{}p{.42\linewidth}p{.52\linewidth}@{}}
+结构 & 完整名称 \\ \midrule
+\Mol{but1} & \ifanswers 丁-1-烯\else\vspace{9mm}\hrule\fi\\[5mm]
+\end{tabular}
+
+\subsection*{二、完整反应默写（不给试剂的空白）}
+\noindent 给定丙烯和目标丙-2-醇，按\textbf{浓硫酸间接水合}写出完整两步反应：两步试剂、条件、烷基硫酸氢酯中间产物以及最终产物。\\[3mm]
+\begin{center}\Mol{propene}\hspace{18mm}$\longrightarrow$\hspace{18mm}\Mol{propan2ol}\end{center}
+\ifanswers
+\noindent\textbf{核对：}\\[2mm]
+\begin{center}
+\Mol[2.65cm]{propene}\ $\xrightarrow{\ce{H2SO4 (conc.)}}$\ \Mol[2.75cm]{isopropyl_sulfate}\\[5mm]
+\Mol[2.75cm]{isopropyl_sulfate}\ $\xrightarrow{\ce{H2O},\ \Delta}$\ \Mol[2.65cm]{propan2ol}
+\end{center}
+\else
+\par\vspace{40mm}\hrule
+\fi
+\end{document}
