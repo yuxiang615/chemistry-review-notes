@@ -1,0 +1,465 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[margin=19mm,top=20mm,bottom=19mm,headheight=16pt,footskip=14pt]{geometry}
+\usepackage[version=4]{mhchem}
+\usepackage{graphicx,amsmath,amssymb,tabularx,array,booktabs,longtable,needspace,multicol}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning,decorations.pathmorphing}
+\usepackage{fancyhdr,enumitem,xcolor,caption}
+\setCJKmainfont{Noto Serif CJK SC}
+\setmainfont{Liberation Serif}
+\setlength{\parindent}{0pt}\setlength{\parskip}{2.3pt}\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.17}
+\definecolor{ink}{RGB}{25,29,33}\color{ink}
+\newif\ifanswers
+\ifdefined\ANSWERS\answerstrue\else\answersfalse\fi
+\pagestyle{fancy}\fancyhf{}\lhead{记忆默写复习回顾03 · 烯烃}\rhead{\ifanswers 答案版\else 练习版\fi\ v0.7}\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{.35pt}
+\setcounter{secnumdepth}{2}
+\ctexset{section={format=\large\bfseries,beforeskip=12pt,afterskip=6pt},subsection={format=\normalsize\bfseries,beforeskip=9pt,afterskip=4pt}}
+\newcommand{\Mol}[2]{\includegraphics[width=#1]{assets/#2.pdf}}
+\newcommand{\Course}[2]{\includegraphics[width=#1]{assets/#2.png}}
+\newcommand{\Fill}[2][5.5cm]{\ifanswers #2\else\rule{#1}{.32pt}\fi}
+\newcommand{\NamedRow}[3][3.4cm]{\raisebox{-.5\height}{\Mol{#1}{#2}}&\ifanswers\parbox[t]{9cm}{#3}\else\rule{9cm}{.34pt}\fi\\[2.4mm]\addlinespace[1.5mm]}
+
+% Variable-height answer cells: actual content determines height, and the ruling
+% sits below both the left prompt and the complete vector answer (no overlap).
+\newsavebox{\AnswerMeasure}
+\newsavebox{\QuestionMeasure}
+\newlength{\TaskMinHeight}
+\newcommand{\DrawRow}[2]{%
+  \par\ifanswers
+    \sbox{\AnswerMeasure}{\begin{minipage}[t]{.66\linewidth}\vspace{0pt}#2\end{minipage}}%
+    \setlength{\TaskMinHeight}{\dimexpr\ht\AnswerMeasure+\dp\AnswerMeasure+6mm\relax}%
+    \ifdim\TaskMinHeight<2.35cm\setlength{\TaskMinHeight}{2.35cm}\fi
+  \else\setlength{\TaskMinHeight}{2.35cm}\fi
+  \Needspace{\dimexpr\TaskMinHeight+8mm\relax}
+  \noindent\begin{minipage}[t][\TaskMinHeight][t]{.31\linewidth}\vspace{0pt}\textbf{#1}\end{minipage}%
+  \hfill\begin{minipage}[t][\TaskMinHeight][t]{.66\linewidth}\vspace{0pt}\ifanswers\usebox{\AnswerMeasure}\fi\end{minipage}
+  \par\hrule\vspace{2.5mm}}
+\newcommand{\FullTask}[3]{%
+  \par\ifanswers
+    \sbox{\AnswerMeasure}{\begin{minipage}[t]{\linewidth}\vspace{0pt}\small #2\end{minipage}}%
+    \setlength{\TaskMinHeight}{\dimexpr\ht\AnswerMeasure+\dp\AnswerMeasure+6mm\relax}%
+    \ifdim\TaskMinHeight<#3\setlength{\TaskMinHeight}{#3}\fi
+  \else\setlength{\TaskMinHeight}{#3}\fi
+  \Needspace{\dimexpr\TaskMinHeight+14mm\relax}
+  \noindent #1\par\begin{minipage}[t][\TaskMinHeight][t]{\linewidth}\vspace{1mm}
+  \ifanswers\usebox{\AnswerMeasure}\fi\end{minipage}\par\hrule\vspace{3mm}}
+\newcommand{\CompactTask}[3]{%
+  \par
+  \sbox{\QuestionMeasure}{\begin{minipage}[t]{.31\linewidth}\vspace{0pt}#1\end{minipage}}%
+  \setlength{\TaskMinHeight}{\dimexpr\ht\QuestionMeasure+\dp\QuestionMeasure+6mm\relax}%
+  \ifanswers
+    \sbox{\AnswerMeasure}{\begin{minipage}[t]{.66\linewidth}\vspace{0pt}\small #2\end{minipage}}%
+    \ifdim\dimexpr\ht\AnswerMeasure+\dp\AnswerMeasure+7mm\relax>\TaskMinHeight
+      \setlength{\TaskMinHeight}{\dimexpr\ht\AnswerMeasure+\dp\AnswerMeasure+7mm\relax}%
+    \fi
+  \fi
+  \ifdim\TaskMinHeight<#3\setlength{\TaskMinHeight}{#3}\fi
+  \Needspace{\dimexpr\TaskMinHeight+9mm\relax}
+  \noindent\begin{minipage}[t][\TaskMinHeight][t]{.31\linewidth}\vspace{0pt}\usebox{\QuestionMeasure}\end{minipage}%
+  \hfill\begin{minipage}[t][\TaskMinHeight][t]{.66\linewidth}\vspace{0pt}
+  \ifanswers\usebox{\AnswerMeasure}\fi\end{minipage}\par\hrule\vspace{2.3mm}}
+% Consistent, centred reaction schemes. The condition is placed on the arrow,
+% not in a separate prose-only line beneath the structures.
+\newcommand{\RxnMols}[4][2.6cm]{%
+  \begin{center}\begin{tabular}{@{}c@{\;}c@{\;}c@{}}
+  \raisebox{-.5\height}{\Mol{#1}{#2}}&$\xrightarrow{\substack{#3}}$&\raisebox{-.5\height}{\Mol{#1}{#4}}
+  \end{tabular}\end{center}}
+\newcommand{\RxnTwoProducts}[5][2.25cm]{%
+  \begin{center}\begin{tabular}{@{}c@{\,}c@{\,}c@{\; + \;}c@{}}
+  \raisebox{-.5\height}{\Mol{#1}{#2}}&$\xrightarrow{\substack{#3}}$&\raisebox{-.5\height}{\Mol{#1}{#4}}&\Mol{#1}{#5}
+  \end{tabular}\end{center}}
+\newcommand{\SecRule}[1]{\par\smallskip\textbf{规则：}#1\par\smallskip}
+\newcommand{\TwoMol}[4]{\raisebox{-.35\height}{\Mol{#1}{#2}}\quad$\xrightarrow{#3}$\quad\raisebox{-.35\height}{\Mol{#1}{#4}}}
+\newcommand{\Mechanism}[4]{%
+  \par\ifanswers
+    \sbox{\AnswerMeasure}{\begin{minipage}[t]{.71\linewidth}\vspace{0pt}\small #2\end{minipage}}%
+    \setlength{\TaskMinHeight}{\dimexpr\ht\AnswerMeasure+\dp\AnswerMeasure+5mm\relax}%
+    \ifdim\TaskMinHeight<#3\setlength{\TaskMinHeight}{#3}\fi
+  \else\setlength{\TaskMinHeight}{#3}\fi
+  \Needspace{\dimexpr\TaskMinHeight+10mm\relax}
+  \noindent\begin{minipage}[t][\TaskMinHeight][t]{.26\linewidth}\vspace{0pt}\textbf{#1}\end{minipage}\hfill
+  \begin{minipage}[t][\TaskMinHeight][t]{.71\linewidth}\vspace{0pt}
+  \ifanswers\usebox{\AnswerMeasure}\fi\end{minipage}\par\hrule\vspace{2mm}}
+\newcommand{\SmallLead}[1]{\par\textbf{#1}\par\vspace{1mm}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries 记忆默写复习回顾03}\par\vspace{2mm}
+{\Huge\bfseries 烯烃}\par\vspace{2mm}
+{\large\ifanswers 答案版\else 练习版\fi\quad v0.7}\par
+\end{center}
+\vspace{2mm}\hrule\vspace{4mm}
+\section{结构、双键性质与同分异构}
+\subsection{$sp^2$杂化与C=C}
+\begin{center}\Mol{3.2cm}{ethene}\qquad\Mol{3.2cm}{but2_cis}\end{center}
+\SecRule{双键两端碳以$sp^2$杂化形成近似平面结构（键角约$120^\circ$），剩余$p$轨道侧向重叠形成$\pi$键。C=C包含一根$\sigma$键和一根$\pi$键，受限旋转是产生几何异构的结构基础。}
+\begin{tabularx}{\linewidth}{@{}p{.52\linewidth}X@{}}\toprule
+观察与记忆项目&填写\\\midrule
+双键碳杂化、局部几何与键角&\Fill{\(sp^2\)，三角平面，约\(120^\circ\)}\\[4mm]
+C=C由几根$\sigma$键、几根$\pi$键组成&\Fill{1根$\sigma$、1根$\pi$}\\[4mm]
+课件给出的C=C / C--C / $\pi$键能（kJ/mol）&\Fill{约612 / 361 / 250}\\[4mm]
+双键限制旋转的原因；$\pi$键活泼的表现&\Fill{转动需破坏$p$轨道侧向重叠；易发生加成、氧化}\\[4mm]\bottomrule\end{tabularx}
+\subsection{同分异构：先画，再判断}
+\SecRule{开链单烯烃通式为\ce{C_nH_{2n}}。构造异构分为碳架异构、双键位置异构；几何异构要求\textbf{每个双键碳}各连接两个不同的基团。}
+\FullTask{\textbf{1.} 不考虑环烷烃，画出\ce{C4H8}的全部烯烃异构体，标明构造异构与几何异构。}{\Mol{2.7cm}{but1}\;丁-1-烯；\Mol{2.7cm}{but2_cis}\;顺丁-2-烯；\Mol{2.7cm}{but2_trans}\;反丁-2-烯；\Mol{2.7cm}{isobutene}\;2-甲基丙烯。丁-2-烯的顺、反是构型异构。}{3.3cm}
+\SmallLead{2. 观察结构并判断能否出现E/Z构型。}
+\begin{tabularx}{\linewidth}{@{}p{.28\linewidth}X@{}}\toprule 结构 & 判断（并写理由）\\\midrule
+\Mol{2.6cm}{but1} & \Fill[8cm]{不能；一个双键碳为\ce{CH2}。} \\[4mm]
+\Mol{2.6cm}{but2_cis} & \Fill[8cm]{能；两端双键碳各连两个不同基团。} \\[4mm]
+\Mol{2.6cm}{isobutene} & \Fill[8cm]{不能；一个双键碳为\ce{CH2}。} \\[4mm]
+\bottomrule\end{tabularx}
+\subsection{顺、反丁-2-烯的物理性质}
+\begin{center}\Mol{3.1cm}{but2_cis}\quad\Mol{3.1cm}{but2_trans}\\[-2mm]\small 顺式\hspace{3.0cm}反式\end{center}
+\begin{tabularx}{\linewidth}{@{}p{.32\linewidth}XX@{}}\toprule 对比&顺式&反式\\\midrule
+偶极矩与沸点&\Fill[3cm]{较大；沸点较高}&\Fill[3cm]{较小；沸点较低}\\[4mm]
+晶格排列与熔点&\Fill[3cm]{排列相对不紧密；熔点较低}&\Fill[3cm]{排列较紧密；熔点较高}\\[4mm]\bottomrule\end{tabularx}
+\emph{辨析：两种异构体的物理性质需联系实际构型，不应仅凭“顺式/反式”推导所有烯烃的绝对大小。}
+\section{烯烃的命名、顺反与E/Z}
+\subsection{命名规则与常见烯基}
+\SecRule{选择包含C=C的适当主链，从使双键位次最小的一端编号；注明双键、取代基的位次和必要的构型符号。环烯烃的双键两碳编号为1、2，再比较取代基位次；烯基作为取代基时须明确连接位置。\textbf{若最长骨架不能把双键列入主链，则按课程示例以烯基作取代基命名；先写出连接位置再编号。}}
+\begin{tabularx}{\linewidth}{@{}p{.46\linewidth}X@{}}\toprule 需要记忆的规则/名称&填写\\\midrule
+编号优先考虑&\Fill{双键所在位置，优先使双键位次尽可能小}\\[4mm]
+环烯烃双键的位次&\Fill{1、2；再决定取代基的最小位次}\\[4mm]
+乙烯基、烯丙基（写结构）&\Fill[6cm]{\ce{CH2=CH-}；\ce{CH2=CHCH2-}}\\[4mm]
+甲亚基、异丙亚基（写结构）&\Fill[6cm]{\ce{=CH2}；\ce{=C(CH3)2}}\\[4mm]
+顺反与E/Z的参照是否总相同&\Fill{不总相同：前者比较相同基团，后者按CIP比较优先基团}\\[4mm]
+\bottomrule\end{tabularx}
+\subsection{结构 $\longrightarrow$ 完整中文名称}
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}p{.32\linewidth}X@{}}\toprule 结构&写完整中文名称（需要时标明E/Z）\\\midrule
+\NamedRow[3.6cm]{pent1}{戊-1-烯}
+\NamedRow[3.6cm]{two_methyl_but1}{2-甲基丁-1-烯}
+\NamedRow[4.5cm]{vinyl_heptane}{4-乙烯基庚烷}
+\bottomrule\end{tabularx}\par\smallskip\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}p{.32\linewidth}X@{}}\toprule 结构&写完整中文名称（续）\\\midrule
+\NamedRow[3.6cm]{methylcyclopent1}{1-甲基环戊-1-烯}
+\NamedRow[3.6cm]{methylcyclopent3}{3-甲基环戊-1-烯}
+\NamedRow[3.6cm]{pent2_E}{(E)-戊-2-烯}
+\NamedRow[3.6cm]{pent2_Z}{(Z)-戊-2-烯}
+\NamedRow[3.6cm]{two_cl_but2_E}{(E)-2-氯丁-2-烯}
+\NamedRow[3.6cm]{two_cl_but2_Z}{(Z)-2-氯丁-2-烯}
+\bottomrule\end{tabularx}
+\subsection{名称 $\longrightarrow$ 画结构}
+\DrawRow{1. 丁-1-烯}{\Mol{4cm}{but1}}
+\DrawRow{2. (E)-戊-2-烯}{\Mol{4cm}{pent2_E}}
+\DrawRow{3. (Z)-戊-2-烯}{\Mol{4cm}{pent2_Z}}
+\DrawRow{4. 4-乙烯基庚烷}{\Mol{5cm}{vinyl_heptane}}
+\DrawRow{5. 3-甲基环戊烯}{\Mol{4cm}{methylcyclopent3}}
+\DrawRow{6. 螺[4.5]癸烷（复习桥环/螺环画法）}{\Mol{4cm}{spiro45}}
+\subsection{课堂复杂环系：保留结构，独立编号与命名}
+以下结构请独立确定桥头、编号方向和完整系统名称。\par\smallskip
+\begin{tabularx}{\linewidth}{@{}>{\centering\arraybackslash}p{.34\linewidth}X@{}}\toprule 结构& 写完整系统名称、必要位次\\\midrule
+\Course{4.1cm}{bridge311} & \Fill[9cm]{2,6,6-三甲基二环[3.1.1]庚-2-烯}\\[13mm]
+\Course{4.1cm}{bridge221} & \Fill[9cm]{5,7,7-三甲基二环[2.2.1]庚-2-烯}\\[13mm]
+\Course{4.1cm}{spiro35} & \Fill[9cm]{1,9-二甲基螺[3.5]壬-5-烯}\\[13mm]
+\bottomrule\end{tabularx}
+\subsection{CIP次序规则与顺反/E/Z}
+\SecRule{双键两端分别用CIP判断优先基团：原子序数大者优先；同位素比较质量数；首原子相同时逐层比较；多重键按重复连接处理。两侧的高优先基团\textbf{同侧为Z，异侧为E}。当能选择相同基团为参照时，可另写顺/反，但不得把顺/反机械换成Z/E。}
+\begin{tabularx}{\linewidth}{@{}p{.45\linewidth}X@{}}\toprule 比较项目&按次序填写或解释\\\midrule
+卤素与常见原子的优先顺序&\Fill{I$>$Br$>$Cl$>$F$>$O$>$N$>$C$>$D$>$H}\\[4mm]
+\ce{-CH3}, \ce{-CH2CH3}, \ce{-CH(CH3)2}, \ce{-C(CH3)3}&\Fill{叔丁基$>$异丙基$>$乙基$>$甲基}\\[4mm]
+\ce{-CH2Cl} 与 \ce{-CH2OH}&\Fill{\ce{-CH2Cl}优先：第一层比较Cl$>$O}\\[4mm]
+\ce{-CO2H} 与 \ce{-C#N}&\Fill{\ce{-CO2H}优先：O,O,O 与 N,N,N 逐层比较}\\[4mm]
+\bottomrule\end{tabularx}
+\begin{center}\Mol{3.6cm}{but2_cis}\qquad\Mol{3.6cm}{two_cl_but2_E}\end{center}
+\emph{辨析：左图顺丁-2-烯同时为Z；右图的\,(E)-2-氯丁-2-烯\,应按两侧CIP优先级判断，不能把Z/E简单等同于顺/反。}
+\FullTask{在上图分别标出每个双键碳上的优先基团，说明两张图的E/Z。}{左图两侧\ce{CH3}优先于H，位于同侧，Z；右图左侧Cl优先于\ce{CH3}，右侧\ce{CH3}优先于H，高优先基团异侧，E。}{2.4cm}
+\section{烯烃稳定性与催化氢化}
+\SecRule{双键碳上的烷基取代数较多时，烯烃一般较稳定。比较\textbf{能够氢化为同一种烷烃}的异构体，起始物越稳定，氢化放热通常越小。催化氢化由金属表面吸附参与，课堂重点是\textbf{主要同面（syn）加氢}。}
+\begin{center}\Mol{3cm}{but1}\qquad\Mol{3cm}{but2_cis}\qquad\Mol{3cm}{but2_trans}\end{center}
+\FullTask{上述三个均氢化为正丁烷的异构体，按稳定性与氢化放热量分别排序，并说明理由。}{稳定性：反丁-2-烯$>$顺丁-2-烯$>$丁-1-烯；放热量相反。前提是氢化后产物相同。}{2.5cm}
+\SmallLead{催化氢化：完整方程式和同面加成}
+\CompactTask{\Mol{2.7cm}{propene}\\丙烯加氢}{\Mol{2.6cm}{propene}\;$\xrightarrow{\ce{H2}/\mathrm{Pt}}$\;\Mol{2.6cm}{propane}}{2.5cm}
+\CompactTask{\Mol{2.7cm}{cyclohexene}\\环己烯加氢}{\Mol{2.5cm}{cyclohexene}\;$\xrightarrow{\ce{H2}/\mathrm{Pd}}$\;\Mol{2.5cm}{cyclohexane}}{2.5cm}
+\FullTask{\textbf{根据表面加氢机理判断：}当使用\ce{D2}/Pt对取代环烯烃加成时，两个D应出现于相对于原双键的哪一面？用楔/虚楔简图表达。}{两个D主要从同一面加入（syn）；对取代环烯烃可能从双键两个面分别加成，若不等价，应讨论立体选择性，而非仅画平面产物。}{2.6cm}
+\section{HX亲电加成、马氏规则与碳正离子}
+\SecRule{一般HX亲电加成：\(\ce{HI}>\ce{HBr}>\ce{HCl}\)（课程中的相对活性）。不对称烯烃通常优先形成较稳定碳正离子：H主要加到含氢较多的双键碳。碳正离子近似平面，简单烷基正离子稳定性$3^\circ>2^\circ>1^\circ>\ce{CH3+}$；经自由碳正离子时须检查1,2-迁移。}
+\subsection{普通HX：底物改变，独立写全方程式}
+\SmallLead{题目给定底物与试剂；请写实际主产物结构及取向。}
+\CompactTask{\Mol{3.0cm}{propene}\\\ce{HBr}（无ROOR）}{\Mol{2.7cm}{propene}\;$\xrightarrow{\ce{HBr}}$\;\Mol{2.7cm}{prop2_bromo}\\主要为2-溴丙烷。}{2.7cm}
+\CompactTask{\Mol{3.0cm}{but1}\\\ce{HBr}（无ROOR）}{\Mol{2.7cm}{but1}\;$\xrightarrow{\ce{HBr}}$\;\Mol{2.7cm}{but2_bromo}\\主要为2-溴丁烷；新手性中心可由两面进攻形成。}{2.8cm}
+\CompactTask{\Mol{3.0cm}{isobutene}\\\ce{HCl}（无ROOR）}{\Mol{2.7cm}{isobutene}\;$\xrightarrow{\ce{HCl}}$\;\ce{(CH3)3CCl}\\经叔碳正离子，主要为2-氯-2-甲基丙烷。}{2.8cm}
+\subsection{马氏规则的理论解释：画出中间体}
+\begin{center}\Mol{4.4cm}{but1}\quad +\;\ce{H-Br}\end{center}
+\textbf{固定底物：丁-1-烯与HBr。}画两种质子化方向、一级/二级碳正离子，并说明为什么主要产物来自二级正离子。
+\Mechanism{步骤1：两条质子化路径}{\ce{CH3CH2CH=CH2 + H+ -> CH3CH2CH^+CH3} （二级，主要）；\quad\ce{CH3CH2CH=CH2 + H+ -> CH3CH2CH2CH2+}（一级，次要）。}{3.5cm}{}
+\Mechanism{步骤2：亲核进攻}{\ce{CH3CH2CH^+CH3 + Br- -> CH3CH2CH(Br)CH3}；次要路径给1-溴丁烷。}{2.5cm}{}
+\Mechanism{箭头含义}{$\pi$键电子对指向\ce{H}；\ce{H-Br}键电子对移向\ce{Br}；第二步\ce{Br-}的孤对电子指向带正电的碳。}{2.1cm}{}
+
+\ifanswers
+\begin{center}
+\begin{tikzpicture}[scale=.93,>=Stealth,line width=.73pt]
+\node (c1) at (0,0) {\ce{CH3}};
+\node (c2) at (1.35,0) {\ce{CH}};
+\node (c3) at (2.66,0) {\ce{CH2}};
+\draw (c1.east)--(c2.west);\draw ([yshift=2pt]c2.east)--([yshift=2pt]c3.west);\draw ([yshift=-2pt]c2.east)--([yshift=-2pt]c3.west);
+\node (h) at (4.32,0) {H};\node (b) at (5.42,0) {Br};\draw (h.east)--(b.west);
+\draw[-{Stealth[length=2.4mm]},bend left=39] (2.00,.14) to node[above,font=\scriptsize] {$\pi\to\mathrm H$} (h.north);
+\draw[-{Stealth[length=2.4mm]},bend right=43] (4.98,-.08) to node[below,font=\scriptsize] {键电子$\to$Br} (b.south);
+\node at (2.75,-1.35) {\ce{(CH3)2CH+ + Br-}};
+\end{tikzpicture}
+\end{center}
+\fi
+
+\FullTask{\textbf{强吸电子基团影响取向：}比较\ce{CF3-CH=CH2}加HX时，\ce{CF3-CH^+-CH3}与\ce{CF3-CH2-CH2+}两种假定碳正离子的相对稳定性；在课程给定情形下写主要产物并说明为何不能机械照搬口诀。}{\ce{CF3}有很强的吸电子诱导效应，使相邻碳带正电的中间体显著不利；按课件给出的比较，\ce{CF3-CH2-CH2+}路径相对有利，生成\ce{CF3-CH2-CH2X}。本题依课件的示例条件讨论，不能无条件外推所有烯烃或所有HX。}{3.35cm}
+\subsection{碳正离子稳定性及重排}
+\begin{tabularx}{\linewidth}{@{}p{.52\linewidth}X@{}}\toprule 结构与判断&填写\\\midrule
+\ce{(CH3)3C+}, \ce{(CH3)2CH+}, \ce{CH3CH2+}, \ce{CH3+} 稳定性&\Fill{叔$>$仲$>$伯$>$甲基}\\[5mm]
+为什么三级碳正离子通常更稳定&\Fill{烷基给电子及$\sigma$--$p$超共轭稳定缺电子中心}\\[5mm]
+何时检查重排，可能迁移什么&\Fill{经自由碳正离子时；邻位H或烷基发生1,2-迁移}\\[5mm]\bottomrule\end{tabularx}
+\FullTask{\textbf{重排题：} \ce{CH2=CH-CH(CH3)2} 加HBr（无过氧化物）。请画初生碳正离子、1,2-H迁移后中间体和最终主要产物，并标明每一步正离子的级别。}{\ce{CH2=CH-CH(CH3)2 + H+ -> CH3-CH^+-CH(CH3)2}\quad （二级）\\[2mm]
+$\xrightarrow{\text{1,2-H迁移}}$\ce{CH3CH2-C^+(CH3)2}\quad（三级）\\[2mm]
+\ce{CH3CH2-C^+(CH3)2 + Br- -> CH3CH2C(Br)(CH3)2}（2-溴-2-甲基丁烷）。}{4.3cm}
+\emph{机理辨析：迁移的是邻位键上的氢或烷基，连同该键电子对迁移；不是游离\ce{H+}或\ce{CH3+}从溶液中重新进攻。}
+\subsection{HBr过氧化物效应：自由基链机理}
+\SecRule{课程强调仅HBr表现典型过氧化物效应；HCl和HI不能简单套用。\ce{ROOR}引发后，\ce{Br^.}优先加在双键较少取代端，使形成的碳自由基相对稳定，再从HBr夺氢，表现为反Markovnikov取向。}
+\begin{center}\Mol{3.5cm}{propene}\end{center}
+\Mechanism{链引发}{\ce{ROOR ->[\Delta/h\nu] 2RO^.}\\[1mm]\ce{RO^. + HBr -> ROH + Br^.}}{2.7cm}{}
+\Mechanism{链增长第一步：}{\ce{Br^. + CH3CH=CH2 -> CH3-CH^.-CH2Br}\quad （仲碳自由基）。}{2.5cm}{}
+\Mechanism{链增长第二步：}{\ce{CH3-CH^.-CH2Br + HBr -> CH3CH2CH2Br + Br^.}}{2.5cm}{}
+\Mechanism{链终止（举例）}{\ce{Br^. + Br^. -> Br2}；还可由两个自由基偶合终止。}{2.1cm}{}
+\SmallLead{同一底物，不同HX/过氧化物条件对照}
+\begin{tabularx}{\linewidth}{@{}p{.23\linewidth}X@{}}\toprule 丙烯的反应条件&写主要产物结构与规则\\\midrule
+HBr & \Fill[11cm]{\ce{CH3CH(Br)CH3}，马氏取向}\\[7mm]
+HBr/ROOR & \Fill[11cm]{\ce{CH3CH2CH2Br}，反马氏取向}\\[7mm]
+HI/ROOR & \Fill[11cm]{不能套HBr过氧化物效应，按普通HI亲电加成讨论}\\[7mm]\bottomrule\end{tabularx}
+\FullTask{\textbf{迁移题：}丁-1-烯分别制备1-溴丁烷和2-溴丁烷。只给底物与目标，自行补全两套试剂、条件和完整反应式。}{\ce{CH3CH2CH=CH2 + HBr ->[ROOR] CH3CH2CH2CH2Br}；\\\ce{CH3CH2CH=CH2 + HBr -> CH3CH2CH(Br)CH3}（无过氧化物）。}{3.4cm}
+\section{硫酸加成与水合：两条制醇路线}
+\SecRule{浓硫酸先对C=C加成形成\textbf{烷基硫酸氢酯}，经水和加热水解生成醇；酸催化直接水合则由质子化、碳正离子形成、水进攻、去质子完成。两种路线常表现马氏取向；经自由碳正离子时要考虑重排。}
+\subsection{间接水合：完整默写，不提前给出中间体}
+\noindent\textbf{每行：}在书写区补全\textbf{底物 + 试剂/条件 + 硫酸氢酯结构 + 水解条件 + 最终醇结构}。\par\smallskip
+\CompactTask{\Mol{3cm}{ethene}\\乙烯$\to$乙醇}{\ce{CH2=CH2 ->[\text{浓} H2SO4] CH3CH2OSO3H ->[H2O,\Delta] CH3CH2OH}\\\Mol{2.6cm}{ethyl_sulfate}\quad\Mol{2.6cm}{ethanol}}{3.1cm}
+\CompactTask{\Mol{3cm}{propene}\\丙烯$\to$丙-2-醇}{\ce{CH3CH=CH2 ->[\text{浓} H2SO4] (CH3)2CHOSO3H ->[H2O,\Delta] (CH3)2CHOH}\\中间体：\Mol{2.6cm}{isopropyl_sulfate}\;最终：\Mol{2.3cm}{propan2ol}}{3.35cm}
+\CompactTask{\Mol{3cm}{isobutene}\\2-甲基丙烯$\to$叔丁醇}{\ce{(CH3)2C=CH2 ->[\text{浓} H2SO4] (CH3)3COSO3H ->[H2O,\Delta] (CH3)3COH}\\中间体：\Mol{2.6cm}{tertbutyl_sulfate}\;最终：\Mol{2.3cm}{tertbutanol}}{3.4cm}
+\subsection{酸催化水合：实际中间体与质子转移}
+\textbf{固定底物：丙烯 + \ce{H2O/H+}}。在右栏依次画出四步反应式，说明酸的作用。
+\Mechanism{第一步： 烯键质子化}{\ce{CH3CH=CH2 + H+ -> (CH3)2CH+}}{2.55cm}{}
+\Mechanism{第二步： 水亲核进攻}{\ce{(CH3)2CH+ + H2O -> (CH3)2CH-OH2+}}{2.55cm}{}
+\Mechanism{第三步： 去质子}{\ce{(CH3)2CHOH2+ + H2O -> (CH3)2CHOH + H3O+}}{2.55cm}{}
+\FullTask{\textbf{复杂水合：} \ce{(CH3)3C-CH=CH2}与\ce{H2O/H+}反应。画初始碳正离子、可能的1,2-甲基迁移及重排后的醇。}{\ce{(CH3)3CCH=CH2 ->[H+] (CH3)3C-CH^+-CH3}；邻位季碳向二级正离子中心迁移甲基，形成更稳定的三级正离子；\ce{H2O}进攻后得\ce{(CH3)2C(OH)CH(CH3)2}（2,3-二甲基丁-2-醇）。}{3.7cm}
+\section{卤素加成：卤鎓离子与反式加成}
+\SecRule{\ce{Cl2}/\ce{Br2}在惰性介质中与C=C加成形成邻二卤代物。\textbf{桥式卤鎓离子}的形成排除了普通自由碳正离子作为主要机理；\ce{Br-}从背面进攻开环，故为\textbf{anti（反式）加成}。}
+\subsection{真实机理：中间体、进攻方向、产物}
+\begin{center}\Mol{3cm}{ethene}\qquad+\;\ce{Br-Br}\end{center}
+\Mechanism{第一步： 卤鎓离子形成}{\ce{CH2=CH2 + Br2 -> [Br-CH2-CH2]^+ + Br-}\\（此处中间体为下图所示的\textbf{三元环桥式溴鎓离子}，不能当作开链溴代碳正离子）。}{3.1cm}{}
+\ifanswers
+\begin{center}
+\begin{tikzpicture}[scale=.80,>=Stealth,line width=.85pt]
+\node (b) at (0,1.35) {$\ce{Br+}$};\node (l) at (-1,0) {$\ce{CH2}$};\node (r) at (1,0) {$\ce{CH2}$};
+\draw (b.south west)--(l.north east);\draw (b.south east)--(r.north west);\draw (l.east)--(r.west);
+\node (bm) at (-3.0,0) {$\ce{Br-}$};
+\draw[-{Stealth[length=3mm]},bend left=32] (bm.north east) to node[above] {背面进攻} (l.west);
+\node at (4.3,.45) {$\longrightarrow\quad\ce{BrCH2CH2Br}$};
+\end{tikzpicture}
+\end{center}
+\fi
+\Mechanism{第二步： 背面开环}{\ce{Br-}由卤鎓桥的反面进攻一个烯碳，打开三元环；乙烯生成1,2-二溴乙烷。取代烯烃的产物需要画出anti立体关系。}{2.6cm}{}
+\subsection{不同底物的产物与立体结构}
+\CompactTask{\Mol{2.9cm}{propene}\\\ce{Br2/CCl4}}{\Mol{2.7cm}{prop_dibromide}\\1,2-二溴丙烷；对乙烯无E/Z问题。}{2.65cm}
+\CompactTask{\Mol{2.9cm}{cyclohexene}\\\ce{Br2/CCl4}}{\Mol{3.0cm}{cyc12dibromo_trans}\\反式-1,2-二溴环己烷，若由两个等价面进攻，形成对映体混合物。}{2.9cm}
+\FullTask{\textbf{丁-2-烯立体专项：}分别从顺式与反式丁-2-烯出发加\ce{Br2}。独立画两个反应的 Fischer 产物，写出哪组为对映体混合物、哪组为 meso。}{顺丁-2-烯进行anti加成得到一对对映体，(2R,3R)与(2S,3S)-2,3-二溴丁烷；反丁-2-烯进行anti加成得到meso-(2R,3S)-2,3-二溴丁烷。请把立体关系落到Fischer而不仅背结论。}{4.0cm}
+\section{卤代醇：X$_2$/H$_2$O 与卤鎓离子开环}
+\SecRule{溶剂为\ce{H2O}时，卤鎓离子可被水亲核进攻：\textbf{OH通常进入较多取代的双键碳，X进入较少取代的双键碳；X/OH总体anti}。换为醇溶剂时可得卤代醚，进攻的亲核体相应改变。}
+\subsection{完整反应与机理}
+\CompactTask{\Mol{3cm}{propene}\\\ce{Br2/H2O}}{\RxnMols{propene}{\ce{Br2}/\ce{H2O}}{prop_bromohydrin}\textbf{OH进入较多取代的双键碳；Br/OH为anti。}}{2.85cm}
+\CompactTask{\Mol{3cm}{isobutene}\\\ce{Br2/H2O}}{\RxnMols{isobutene}{\ce{Br2}/\ce{H2O}}{isobutene_bromohydrin}\ce{(CH3)2C(OH)CH2Br}。}{2.85cm}
+\CompactTask{\Mol{3cm}{cyclohexene}\\\ce{Br2/H2O}}{\RxnMols{cyclohexene}{\ce{Br2}/\ce{H2O}}{cyc_bromohydrin_trans}反式-2-溴环己烷-1-醇：Br/OH反面。}{2.9cm}
+\Mechanism{卤鎓离子}{\ce{Br2}受烯键极化后，先生成环状溴鎓离子；反应不需要假设可自由旋转的普通碳正离子。}{2.35cm}{}
+\Mechanism{水进攻与去质子}{\ce{H2O}由反面进攻环中较多取代的碳，形成溴代氧鎓中间体；失去\ce{H+}得到卤代醇。\textbf{原因：}非对称桥式溴鎓离子中，多取代碳一般具有较大的部分正电性，因而亲核体优先由反面在此开环。}{2.35cm}{}
+\FullTask{\textbf{换亲核体：}环己烯分别与\ce{Br2/CCl4}、\ce{Br2/H2O}、\ce{Br2/CH3OH}反应。画出三组产物，标出anti相对构型，并比较Br、OH与\ce{OCH3}的来源。}{%
+\RxnMols[2.4cm]{cyclohexene}{\ce{Br2}/\ce{CCl4}}{cyc12dibromo_trans}
+\RxnMols[2.4cm]{cyclohexene}{\ce{Br2}/\ce{H2O}}{cyc_bromohydrin_trans}
+\RxnMols[2.4cm]{cyclohexene}{\ce{Br2}/\ce{CH3OH}}{cyc_bromomethoxy_trans}
+三者均为anti：Br来自\ce{Br2}，OH来自水，\ce{OCH3}来自甲醇。}{7.6cm}
+\section{硼氢化—氧化：反马氏与同面加成}
+\SecRule{先用\ce{BH3.THF}（或课程的\ce{B2H6}表示法），再\ce{H2O2/OH-}。B进入相对少取代的双键碳，后续被OH取代；B与H在硼氢化阶段\textbf{协同、同面（syn）}加入，过程中没有自由碳正离子重排。}
+\subsection{和酸催化水合的完整对照}
+\begin{tabularx}{\linewidth}{@{}p{.28\linewidth}XX@{}}\toprule 观察点&酸催化直接水合&硼氢化—氧化\\\midrule
+取向&\Fill[3.1cm]{马氏取向}&\Fill[3.1cm]{反马氏取向}\\[5mm]
+中间过程&\Fill[3.1cm]{质子化后自由C$^+$}&\Fill[3.1cm]{协同硼氢化，氧化保留碳骨架}\\[5mm]
+重排/立体结果&\Fill[3.1cm]{可能重排；非统一syn规律}&\Fill[3.1cm]{不经自由C$^+$；syn}\\[5mm]\bottomrule\end{tabularx}
+\CompactTask{\Mol{3cm}{propene}\\用硼氢化制伯醇}{\RxnMols{propene}{1)\ \ce{BH3.THF}\\2)\ \ce{H2O2/OH-}}{propan1ol}}{2.7cm}
+\CompactTask{\Mol{3cm}{but1}\\用硼氢化制伯醇}{\RxnMols{but1}{1)\ \ce{BH3.THF}\\2)\ \ce{H2O2/OH-}}{butan1ol}}{2.7cm}
+\CompactTask{\Mol{3cm}{isobutene}\\反马氏水合}{\RxnMols{isobutene}{1)\ \ce{BH3.THF}\\2)\ \ce{H2O2/OH-}}{isobutanol}}{2.7cm}
+\FullTask{\textbf{机理要点：}以丙烯为例，画出四元环过渡态，标出B$^{\delta+}$与H$^{\delta-}$及B、H分别加到哪一个烯碳；最后写氧化产物。}{在硼氢化的四元协同过渡态中，B向末端\ce{CH2}转移、H向中间碳转移，B与H来自同一面；\ce{H2O2/OH-}将C--B转为C--OH，产物\ce{CH3CH2CH2OH}。}{3.3cm}
+
+\ifanswers
+\begin{center}
+\begin{tikzpicture}[>=Stealth,scale=.94,line width=.8pt,baseline=(current bounding box.center)]
+  % The four centres in the concerted transition geometry:
+  \node (B) at (0,1.65) {\ce{BH2^{\delta+}}};
+  \node (H) at (3.05,1.65) {\ce{H^{\delta-}}};
+  \node (T) at (0,0) {\ce{CH2}};
+  \node (S) at (3.05,0) {\ce{CH-CH3}};
+  \draw (B.east)--(H.west);
+  \draw ([yshift=2.2pt]T.east)--([yshift=2.2pt]S.west);
+  \draw ([yshift=-2.2pt]T.east)--([yshift=-2.2pt]S.west);
+  \draw[densely dashed] (B.south)--(T.north);
+  \draw[densely dashed] (H.south)--(S.north);
+  \draw[-{Stealth[length=2.3mm]},bend left=35] (1.3,.22) to (B.south east);\node[font=\scriptsize] at (-.82,.62) {$\pi$电子对};
+  \draw[-{Stealth[length=2.3mm]},bend left=30] (1.5,1.85) to (S.north);\node[font=\scriptsize] at (3.5,2.20) {B--H键电子对};
+  \node[align=left,anchor=west] at (4.15,.86) {\small 同一个四中心过渡态\\[-.1mm]
+   \small C--B与C--H键同时形成\\[-.1mm]
+   \small B接末端碳，H接内部碳};
+\end{tikzpicture}
+\par\smallskip
+\ce{CH3CH=CH2 ->[1) BH3.THF][2) H2O2/OH-] CH3CH2CH2OH}
+\end{center}
+\fi
+
+\FullTask{\textbf{环状立体训练：}环己烯分别经\ce{Br2/CCl4}和硼氢化—氧化。对比anti/syn的意义，并画出相应产物。}{\RxnMols[2.7cm]{cyclohexene}{\ce{Br2}/\ce{CCl4}}{cyc12dibromo_trans}\RxnMols[2.7cm]{cyclohexene}{1)\ \ce{BH3.THF}\\2)\ \ce{H2O2/OH-}}{cyclohexanol}第一反应Br/Br反面；第二反应H/OH同面。环己烯的净产物只显示环己醇，须用有取代基的底物进一步考察syn。}{3.6cm}
+\section{烯烃的氧化：断裂、邻二醇与环氧化}
+\subsection{不同氧化条件：先看双键是否断裂}
+\begin{tabularx}{\linewidth}{@{}p{.43\linewidth}X@{}}\toprule 氧化条件&结构变化与关键产物\\\midrule
+浓热酸性\ce{KMnO4}&\Fill[8.5cm]{断裂双键；按被氧化碳原子上的H数判断酮、酸或\ce{CO2}}\\[6mm]
+1)\ce{O3}；2)\ce{Zn/H2O}&\Fill[8.5cm]{还原处理后双键断裂生成醛/酮，尽量避免醛继续氧化}\\[6mm]
+稀冷\ce{KMnO4/OH-}或\ce{OsO4}&\Fill[8.5cm]{不裂解；两个OH同面加入形成邻二醇}\\[6mm]
+过氧酸\ce{RCO3H}&\Fill[8.5cm]{环氧化；保留双键原有取代基相对构型}\\[6mm]
+环氧化后\ce{H2O/H+}&\Fill[8.5cm]{开环，得到anti关系的反式邻二醇（环状底物）}\\[6mm]
+\bottomrule\end{tabularx}
+\subsection{强氧化裂解与臭氧化：正向、逆向都要会}
+\SecRule{对一个双键碳：连两个碳基团时强氧化后通常为酮；连一个H时进一步成为羧酸；末端\ce{=CH2}在强氧化条件下可进一步成\ce{CO2}。\ce{O3}后用Zn还原处理则分别保留醛/酮。}
+\SmallLead{完整方程式：同一个底物换氧化条件}
+\CompactTask{\Mol{2.7cm}{propene}\\1)\ce{O3} 2)\ce{Zn/H2O}}{\RxnTwoProducts{propene}{1)\ \ce{O3}\\2)\ \ce{Zn/H2O}}{ethanal}{methanal}}{2.65cm}
+\CompactTask{\Mol{2.7cm}{propene}\\浓热酸性\ce{KMnO4}}{\begin{center}\Mol{2.45cm}{propene}\quad$\xrightarrow{\substack{\text{浓、热、酸性}\ \ce{KMnO4}}}$\quad\Mol{2.45cm}{aceticacid} $+\ce{CO2}$\end{center}末端碳进一步强氧化为\ce{CO2}。}{2.65cm}
+\CompactTask{\Mol{2.7cm}{isobutene}\\1)\ce{O3} 2)\ce{Zn/H2O}}{\RxnTwoProducts{isobutene}{1)\ \ce{O3}\\2)\ \ce{Zn/H2O}}{acetone}{methanal}}{2.65cm}
+\CompactTask{\Mol{2.7cm}{but1}\\浓热酸性\ce{KMnO4}}{\begin{center}\Mol{2.45cm}{but1}\quad$\xrightarrow{\substack{\text{浓、热、酸性}\ \ce{KMnO4}}}$\quad\Mol{2.45cm}{propanoicacid} $+\ce{CO2}$\end{center}断裂生成丙酸，末端碳进一步生成\ce{CO2}。}{2.65cm}
+\FullTask{\textbf{臭氧化逆推：}还原性臭氧化后得到\ce{CH3CHO + HCHO + OHCCH2CHO}，逆向拼接羰基碳，画出原来的二烯结构。}{\ce{CH3CH=CHCH2CH=CH2}：\Mol{4.4cm}{hexadiene14}。各裂解片段分别来自两端与中间的三个部分。}{2.9cm}
+\FullTask{\textbf{结构逆推：}A的分子式\ce{C7H12}，经臭氧化还原水解只得到一分子\ce{CH3CO(CH2)3COCH3}。画出A，继而分别画出稀冷\ce{KMnO4}产物B与环氧化产物C。}{A：\Mol{2.4cm}{dimethylcyclopentene}；B（同面二羟基化）：\Mol{2.4cm}{dimethylcycdiol_cis}；C（环氧化）：\Mol{2.4cm}{dimethylcyclopent_epoxide}。三者依次为\ce{C7H12}、\ce{C7H14O2}、\ce{C7H12O}；立体面由双键两面进攻产生。}{3.6cm}
+\subsection{同面邻二羟基化、环氧化和反面开环}
+\begin{center}\Mol{3cm}{cyclohexene}\end{center}
+\CompactTask{环己烯\\稀冷\ce{KMnO4/OH-}}{\Mol{3cm}{cyc12diol_cis}\\相邻两个OH为同侧（cis，syn加成）。}{2.95cm}
+\CompactTask{环己烯\\\ce{RCO3H}}{\Mol{3cm}{cyclohexeneoxide}\\环氧环己烷；环氧化为立体专一的构型保持过程。}{2.95cm}
+\CompactTask{上述环氧化物\\随后\ce{H2O/H+}}{\Mol{3cm}{cyc12diol_trans}\\酸催化开环从反面进攻，得到反式邻二醇。}{2.95cm}
+\FullTask{\textbf{立体对比：}分别从顺丁-2-烯、反丁-2-烯出发：写过氧酸环氧化后取代基相对关系；再比较从顺丁-2-烯出发的稀冷\ce{KMnO4}产物。用楔线或Fischer画出产物，不接受只写\texttt{syn}/\texttt{anti}。}{过氧酸环氧化保持起始烯烃上两个\ce{CH3}的顺反相对关系；稀冷\ce{KMnO4}对顺丁-2-烯同面加两个OH，得到meso-丁-2,3-二醇。\Mol{3cm}{diol_meso}}{3.5cm}
+\section{烯丙位卤代、自由基与NBS}
+\SecRule{烯烃与卤素可发生两种\textbf{不同}反应：常见惰性溶剂条件下在双键发生加成；高温/光照且保持较低卤素浓度时可在\textbf{烯丙位}发生自由基取代。NBS实验室用于维持低浓度\ce{Br2}，适于烯丙位溴代。}
+\begin{tabularx}{\linewidth}{@{}p{.33\linewidth}X@{}}\toprule 丙烯的不同条件&写出完整产物、反应类别\\\midrule
+\ce{Cl2/CCl4}&\Fill[10cm]{\ce{CH3CHClCH2Cl}，双键亲电加成}\\[7mm]
+\ce{Cl2}，气相高温/低浓度&\Fill[10cm]{\ce{CH2=CHCH2Cl + HCl}，烯丙位自由基取代}\\[7mm]
+NBS，自由基引发条件&\Fill[10cm]{\ce{CH2=CHCH2Br}，烯丙位溴代}\\[7mm]\bottomrule\end{tabularx}
+\subsection{烯丙位自由基的链过程}
+\Mechanism{链引发}{\ce{Cl2 ->[h\nu/\Delta] 2Cl^.}}{2.25cm}{}
+\Mechanism{链增长第一步：}{\ce{Cl^. + CH2=CHCH3 -> HCl + CH2=CHCH2^.}\quad（共振稳定的烯丙基自由基）。}{2.75cm}{}
+\Mechanism{链增长第二步：}{\ce{CH2=CHCH2^. + Cl2 -> CH2=CHCH2Cl + Cl^.}}{2.5cm}{}
+\FullTask{\textbf{NBS辨析：}以环己烯为例，与\ce{Br2/CCl4}或NBS/引发剂反应，其主要\textbf{反应位置}有什么本质区别？写出反应类别并画有代表性的产物结构。}{\ce{Br2/CCl4}：跨双键anti加成，反式-1,2-二溴环己烷\,\Mol{2.8cm}{cyc12dibromo_trans}；NBS：在烯丙位取代，形成3-溴环己-1-烯（烯键保留）。}{2.85cm}
+\section{烯烃的制备：反方向选择起始物}
+\SecRule{课件给出三条路线：醇在酸和加热下脱水、卤代烃在醇性碱条件下脱HX、邻二卤代物用Zn脱卤。普通Zaitsev取向倾向于较多取代烯烃；遇到可能经碳正离子的醇脱水，应检查重排。}
+\SmallLead{给前体与目标，写出完整方程式；注意主、次产物。}
+\CompactTask{\Mol{3cm}{butan2ol}\\2-丁醇脱水}{\ce{CH3CH(OH)CH2CH3 ->[H2SO4,\Delta] CH3CH=CHCH3 + H2O}\\丁-2-烯（顺反混合）通常为主要烯烃，也可有丁-1-烯。}{2.7cm}
+\CompactTask{\Mol{3cm}{but2_bromo}\\卤代烃脱HX}{\ce{CH3CH(Br)CH2CH3 ->[KOH/EtOH,\Delta] CH3CH=CHCH3 + KBr + H2O}\\以丁-2-烯为主要烯烃；可有丁-1-烯。}{2.7cm}
+\CompactTask{\Mol{3cm}{but_dibromide}\\邻二卤代物脱卤}{\ce{BrCH2CHBrCH2CH3 + Zn ->[EtOH] CH2=CHCH2CH3 + ZnBr2}\\得到丁-1-烯。}{2.7cm}
+\FullTask{\textbf{课堂合成路线：}由丁-1-烯制备以丁-2-烯为主要产物的混合物；由丙烯制备1,2-二溴-3-氯丙烷。写出每一步底物、中间体、试剂和主要产物。}{路线（一）：\ce{CH2=CHCH2CH3 ->[HBr] CH3CH(Br)CH2CH3 ->[KOH/EtOH,\Delta] CH3CH=CHCH3}（混合烯烃，以丁-2-烯为主）；\\路线（二）：\ce{CH2=CHCH3 ->[Cl2,\Delta] CH2=CHCH2Cl ->[Br2/CCl4] BrCH2CHBrCH2Cl}。}{4.0cm}
+\section{跨反应比较：同一结构，多种条件}
+\noindent\textbf{先做表，再做下面的真实反应。}此表只负责建立反应类别间的联系，不代替完整反应式练习。\par\medskip
+\begin{tabularx}{\linewidth}{@{}p{3.5cm}p{3.1cm}p{3.2cm}X@{}}\toprule
+反应条件&主要结果&区域选择性&立体/机制\\
+\midrule
+\ce{H2}/Pt等 &\Fill[2.7cm]{烷烃}&---&\Fill[3cm]{金属表面，主要syn}\\[3mm]
+HX &\Fill[2.7cm]{卤代烷}&\Fill[3cm]{通常马氏}&\Fill[3cm]{C$^+$，可能重排}\\[3mm]
+HBr/ROOR &\Fill[2.7cm]{溴代烷}&\Fill[3cm]{反马氏}&\Fill[3cm]{自由基链过程}\\[3mm]
+浓\ce{H2SO4}，后水解 &\Fill[2.7cm]{醇}&\Fill[3cm]{通常马氏}&\Fill[3cm]{先硫酸氢酯，后水解}\\[3mm]
+\ce{H2O/H+} &\Fill[2.7cm]{醇}&\Fill[3cm]{通常马氏}&\Fill[3cm]{C$^+$，可能重排}\\[3mm]
+\bottomrule\end{tabularx}\par\medskip
+\begin{tabularx}{\linewidth}{@{}p{3.5cm}p{3.1cm}p{3.2cm}X@{}}\toprule
+反应条件（续）&主要结果&区域选择性&立体/机制\\\midrule
+\ce{Br2/CCl4} &\Fill[2.7cm]{邻二溴代物}&---&\Fill[3cm]{溴鎓离子，anti}\\[3mm]
+\ce{Br2/H2O} &\Fill[2.7cm]{卤代醇}&\Fill[3cm]{OH较多取代端}&\Fill[3cm]{溴鎓离子，anti}\\[3mm]
+1)\ce{BH3.THF} 2)\ce{H2O2/OH-}&\Fill[2.7cm]{醇}&\Fill[3cm]{反马氏}&\Fill[3cm]{协同硼氢化，syn}\\[3mm]
+稀冷\ce{KMnO4}/\ce{OsO4} &\Fill[2.7cm]{邻二醇}&---&\Fill[3cm]{不裂解，syn}\\[3mm]
+\ce{RCO3H}&\Fill[2.7cm]{环氧化物}&---&\Fill[3cm]{构型保持}\\[3mm]
+\ce{O3}/Zn；浓热\ce{KMnO4}&\Fill[2.7cm]{断裂产物}&\Fill[3cm]{取决于碳上H数}&\Fill[3cm]{醛酮 vs 强氧化酸/酮}\\[3mm]
+NBS/引发剂&\Fill[2.7cm]{烯丙位溴代物}&\Fill[3cm]{取代非加成}&\Fill[3cm]{共振稳定自由基}\\[3mm]
+\bottomrule\end{tabularx}
+\section{综合训练：换底物、换条件、换目标}
+\subsection{同一底物，六种以上不同反应}
+以下以\textbf{环己烯}为共同底物；表内条件已给，产物和立体关系必须画实际分子结构，不能只写“加成”或“同面”。
+\begin{center}\Mol{3.8cm}{cyclohexene}\end{center}
+\SmallLead{按给定条件独立完成；需要时写对映体。}
+\CompactTask{1. \ce{Br2/CCl4}}{\Mol{3cm}{cyc12dibromo_trans}\quad anti；反式-1,2-二溴环己烷。}{2.75cm}
+\CompactTask{2. \ce{Br2/H2O}}{\Mol{3cm}{cyc_bromohydrin_trans}\quad anti；反式溴代醇。}{2.75cm}
+\CompactTask{3. 稀冷\ce{KMnO4}/\ce{OsO4}}{\Mol{3cm}{cyc12diol_cis}\quad syn；顺式邻二醇。}{2.75cm}
+\CompactTask{4. 过氧酸\ce{RCO3H}}{\Mol{3cm}{cyclohexeneoxide}\quad 环氧环己烷。}{2.75cm}
+\CompactTask{5. 先环氧化，再\ce{H2O/H+}}{\Mol{3cm}{cyc12diol_trans}\quad 反式-1,2-环己二醇。}{2.75cm}
+\CompactTask{6. 硼氢化—氧化}{\Mol{3cm}{cyclohexanol}\quad 环己醇；硼氢化阶段为同面。}{2.75cm}
+\CompactTask{7. \ce{O3}，后\ce{Zn/H2O}}{\Mol{3.5cm}{cyclohexdial}\quad 己烷-1,6-二醛，\ce{OHC(CH2)4CHO}。}{2.75cm}
+\CompactTask{8. NBS，自由基引发}{\Mol{3cm}{cyc_allyl_bromo}\quad 代表性3-溴环己-1-烯；双键保留。}{2.75cm}
+\subsection{只给起始物和目标：试剂与条件由自己选择}
+\noindent\textbf{作答要求：}在右边完成\textbf{整条反应式}，而不仅是填一个试剂名。这里不重复设置“给定结构与任务”等表头。
+\CompactTask{\Mol{2.6cm}{propene}\\目标：\Mol{2.2cm}{propan1ol}}{\ce{CH3CH=CH2 ->[1) BH3.THF][2) H2O2/OH-] CH3CH2CH2OH}}{4.15cm}
+\CompactTask{\Mol{2.6cm}{propene}\\目标：\Mol{2.2cm}{propan2ol}}{\ce{CH3CH=CH2 + H2O ->[H+] CH3CH(OH)CH3}。}{4.15cm}
+\CompactTask{\Mol{2.6cm}{but1}\\目标：\Mol{2.2cm}{but1_bromo}}{\ce{CH3CH2CH=CH2 + HBr ->[ROOR] CH3CH2CH2CH2Br}。}{4.15cm}
+\CompactTask{\Mol{2.6cm}{isobutene}\\目标：\Mol{2.2cm}{isobutanol}}{\ce{(CH3)2C=CH2 ->[1) BH3.THF][2) H2O2/OH-] (CH3)2CHCH2OH}。}{4.15cm}
+\CompactTask{\Mol{2.6cm}{propene}\\目标：\Mol{2.2cm}{prop_bromohydrin}}{\ce{CH3CH=CH2 + Br2 + H2O -> CH3CH(OH)CH2Br + HBr}。}{4.15cm}
+\Needspace{4cm}\subsection{课堂题：催化、立体选择与合成推断}
+\FullTask{\textbf{加成速率比较：}丁-1-烯与2-甲基丙烯分别和HBr反应，写出主要产物并比较哪一个反应较快；结合碳正离子说明。}{丁-1-烯主要生成2-溴丁烷（仲碳正离子路径），2-甲基丙烯主要生成2-溴-2-甲基丙烷（叔碳正离子路径）；后者通常更快。}{3cm}
+\FullTask{\textbf{立体选择性合成：}由丁-2-炔制备\textbf{meso-丁-2,3-二醇}，独立给出两条不同的立体选择合成路线，并解释为什么均得到目标构型。}{\textbf{路线A：}\ce{CH3C#CCH3 ->[H2/Lindlar] (Z)-CH3CH=CHCH3 ->[OsO4/H2O] meso-(2R,3S)-CH3CH(OH)CH(OH)CH3}；\;\textbf{路线B：}\ce{CH3C#CCH3 ->[Na/NH3(l)] (E)-CH3CH=CHCH3 ->[RCO3H][H2O/H+] meso-(2R,3S)-CH3CH(OH)CH(OH)CH3}。\quad 目标结构：\Mol{2.7cm}{diol_meso}。}{4.2cm}
+\subsection{立体化学专题：反应产物须真正画出}
+\newcommand{\FTwo}[6]{\begin{tikzpicture}[baseline=-1mm,scale=.61,line width=.75pt]
+\draw (0,-1.60)--(0,1.60);\draw (-1.02,.50)--(1.02,.50);\draw (-1.02,-.50)--(1.02,-.50);
+\node[above] at (0,1.60){#1};\node[below] at (0,-1.60){#2};
+\node[left] at (-1.02,.50){#3};\node[right] at (1.02,.50){#4};
+\node[left] at (-1.02,-.50){#5};\node[right] at (1.02,-.50){#6};\end{tikzpicture}}
+\FullTask{顺丁-2-烯与反丁-2-烯分别加\ce{Br2/CCl4}。分别画\textbf{Fischer投影式}，判断产物为一对对映体混合物还是meso。}{\textbf{顺式：}一对对映体，两个Fischer如下（C2、C3为RR与SS）：\\[2mm]
+\FTwo{\ce{CH3}}{\ce{CH3}}{\ce{Br}}{H}{H}{\ce{Br}}\qquad
+\FTwo{\ce{CH3}}{\ce{CH3}}{H}{\ce{Br}}{\ce{Br}}{H}
+\qquad\textbf{反式：}meso，Fischer：\FTwo{\ce{CH3}}{\ce{CH3}}{H}{\ce{Br}}{H}{\ce{Br}}}{5.6cm}
+\FullTask{\textbf{立体选择反应辨析：}同一烯烃改用\ce{D2/Pt}、\ce{Br2/CCl4}、稀冷\ce{KMnO4}、过氧酸时，分别标明“同面/反面/构型保持”及其\textbf{加到结构上的具体位置}。}{\ce{D2/Pt}：两个D主要syn；\ce{Br2/CCl4}：anti；稀冷\ce{KMnO4}：两个OH syn；过氧酸：氧原子桥连原双键两端，保留起始双键取代基的相对构型。具体结构可对照本章环己烯的四组已绘制产物。}{3.3cm}
+
+
+\section{课堂代表性综合题：逐题写结构与条件}
+\subsection{同一底物三种制醇方案}
+\noindent 以\textbf{亚甲基环戊烷}为起始物。先观察双键在环外，再在每一道题中写\textbf{完整反应式}；需经过中间体时不得省略中间结构。
+\begin{center}\Mol{4.0cm}{methylenecyclopentane}\end{center}
+\CompactTask{1. 制备1-甲基环戊醇；\par 酸催化直接水合}{\Mol{2.9cm}{methylenecyclopentane}$\xrightarrow{\ce{H2O/H+}}$\Mol{3.2cm}{one_methylcyclopentanol}。\quad OH进入环上的较多取代碳。}{3.1cm}
+\CompactTask{2. 制备1-甲基环戊醇；\par 先加浓硫酸再水解}{\Mol{2.6cm}{methylenecyclopentane}$\xrightarrow{\text{浓}\ce{H2SO4}}$\Mol{2.8cm}{one_methylcyclopentyl_sulfate}$\xrightarrow{\ce{H2O},\Delta}$\Mol{2.8cm}{one_methylcyclopentanol}}{3.2cm}
+\CompactTask{3. 制备环戊基甲醇；\par 选择避免碳正离子的路线}{\Mol{2.7cm}{methylenecyclopentane}$\xrightarrow[\ce{2) H2O2/OH-}]{\ce{1) BH3.THF}}$\Mol{3.0cm}{cyclopentylmethanol}。\quad 反马氏水合。}{3.0cm}
+\CompactTask{4. 制备溴甲基环戊烷}{\Mol{2.8cm}{methylenecyclopentane}$\xrightarrow{\ce{HBr/ROOR}}$\Mol{2.8cm}{cyclopentylmethylbromide}。\quad 自由基反马氏路线。}{3.0cm}
+
+\subsection{课堂的特殊加成与氧化条件}
+\CompactTask{\Mol{2.8cm}{isobutene}\ce{ICl}；\par 标出主要产物中I与Cl的位置}{\Mol{3.1cm}{isobutene_iodochloride}\quad \ce{(CH3)2C(Cl)CH2I}；\ce{ICl}中较亲电的I先与双键作用，\ce{Cl-}在较取代的碳开环。}{3.1cm}
+\CompactTask{\Mol{2.9cm}{cyclohexene}\par 浓热酸性\ce{KMnO4}；\par 写出断裂产物}{\Mol{3.6cm}{adipic_acid}\quad 己二酸：\ce{HOOC(CH2)4COOH}。两个原双键碳各连接一个H，进一步氧化为羧酸。}{3.1cm}
+\SmallLead{带一个甲基的环烯烃：不仅写官能团，还要标出相对立体结构。}
+\begin{center}\Mol{3.7cm}{one_methylcyclopentene}\end{center}
+\CompactTask{1. \ce{Br2/CCl4}\\反式加成}{\RxnMols[2.75cm]{one_methylcyclopentene}{\ce{Br2}/\ce{CCl4}}{one_methylcycpent_transdibromide}\quad 两个Br在原双键两端反面（anti）；本图画出一个代表构型，另一面进攻可给镜像。}{3.1cm}
+\CompactTask{2. 稀冷\ce{KMnO4/OH-}\\同面双羟基化}{\RxnMols[2.75cm]{one_methylcyclopentene}{\text{稀、冷}\\ \ce{KMnO4}/\ce{OH-}}{one_methylcycpent_cisdiol}\quad 两个OH同侧（syn），注意不能把甲基与OH的顺反关系当作这条规则。}{3.1cm}
+\CompactTask{3. 过氧酸\ce{RCO3H}\\构型保持}{\RxnMols[2.75cm]{one_methylcyclopentene}{\ce{RCO3H}}{one_methylcycpent_epoxide}\quad 跨原双键生成环氧环；从两面进攻需考虑可能的一对镜像产物。}{3.0cm}
+
+\clearpage
+\subsection{同一甲基取代环己烯：八种条件综合}
+\noindent 同一底物在不同条件下可能\textbf{加成、环氧化、氧化、烯丙位取代}。请对每一行给出\textbf{完整产物结构与试剂/条件}，涉及新手性中心时标明相对构型；若可能有不止一种产物，请标明代表产物而非假设绝对单一。
+\begin{center}\Mol{4.0cm}{one_methylcychexene}\end{center}
+\CompactTask{1. \ce{Br2/CCl4}}{\RxnMols[2.7cm]{one_methylcychexene}{\ce{Br2}/\ce{CCl4}}{one_methylcychex_transdibromide}\par\smallskip{}Br/Br 反面，画一组代表性立体产物及镜像。}{4.1cm}
+\CompactTask{2. \ce{PhCO3H}}{\RxnMols[2.7cm]{one_methylcychexene}{\ce{PhCO3H}}{one_methylcychex_epoxide}\par\smallskip{}跨双键环氧化；保留原烯烃取代基相对关系。}{4.1cm}
+\CompactTask{3. 稀冷\ce{KMnO4/OH-}}{\RxnMols[2.7cm]{one_methylcychexene}{\text{稀冷}\ \ce{KMnO4}/\ce{OH-}}{one_methylcychex_cisdiol}\par\smallskip{}两个OH 同面（syn）加入，需区别甲基与OH的相对关系。}{4.1cm}
+\CompactTask{4. \ce{Br2/H2O}}{\RxnMols[2.7cm]{one_methylcychexene}{\ce{Br2}/\ce{H2O}}{one_methylcychex_bromohydrin}\par\smallskip{}OH在带甲基的双键碳上；Br/OH反面。}{4.1cm}
+\CompactTask{5. 1)\ce{BH3.THF}; 2)\ce{H2O2/OH-}}{\RxnMols[2.7cm]{one_methylcychexene}{1)\ \ce{BH3.THF}\\2)\ \ce{H2O2/OH-}}{one_methylcychex_hydroborate}\par\smallskip{}OH在原双键较少取代端，H/OH syn；图为一种代表构型。}{4.1cm}
+\CompactTask{6. NBS，自由基引发}{\begin{center}\Mol{2.2cm}{one_methylcychexene}\; $\xrightarrow{\ce{NBS},\ h\nu}$\;\Mol{2.1cm}{one_methylcychex_allylbr6}\; +\;\Mol{2.1cm}{one_methylcychex_bromomethyl}\; +\;\Mol{2.1cm}{one_methylcychex_allylbr3}\end{center}\par\smallskip\textbf{位置辨析：}烯丙位的环上两侧及双键甲基均可能发生取代；所示为课件的代表性区域异构产物，不把它们当作唯一、定量产物。}{4.1cm}
+\CompactTask{7. \ce{HBr/ROOR}}{\RxnMols[2.7cm]{one_methylcychexene}{\ce{HBr}/\ce{ROOR}}{one_methylcychex_hbrperoxide}\par\smallskip{}Br进入原双键较少取代端；自由基机理不具有卤鎓开环的严格anti立体专一性。}{4.1cm}
+\CompactTask{8. \ce{OsO4/H2O2}}{\Mol{3.1cm}{one_methylcychex_cisdiol}\\[1mm]syn邻二羟基化；与3题可用同一类构型产物核对。}{4.1cm}
+
+\clearpage
+\subsection{课堂复合产物：反应、构型与样品旋光性}
+\FullTask{\textbf{同一个开链烯烃：}以\ce{(Z)-CH3CH=C(CH3)CH2CH3}为底物，分别用\ce{Br2/CCl4}、\ce{1) BH3.THF, 2) H2O2/OH-}与稀冷\ce{KMnO4}处理。各自完整写产物并\textbf{画楔线/虚楔}，对照区分anti与syn；不要只写试剂的名称。}{\textbf{溴化：}Br与Br跨双键anti加入；\textbf{硼氢化-氧化：}H与OH来自同面，OH主要进入原C2；\textbf{稀冷高锰酸钾：}C2、C3同面加两个OH。三条反应均从两面可能形成不同立体产物；不能凭结构擅自填旋光号。\\[1mm]
+\textbf{硼氢化--氧化的Fischer立体产物（课件明确给出）：}\\[1mm]
+\FTwo{\ce{CH3}}{\ce{CH2CH3}}{\ce{OH}}{H}{H}{\ce{CH3}}\qquad
+\FTwo{\ce{CH3}}{\ce{CH2CH3}}{H}{\ce{OH}}{\ce{CH3}}{H}
+\quad 分别为（2R,3R）与（2S,3S）的一对对映体。}{4.8cm}
+
+\subsection{跨章自由基问题：保留课堂设问形式}
+\noindent 下列题把立体化学中的\textbf{构型保持、自由基中间体、外消旋体与非对映体}接到卤代反应。
+\newcommand{\FOne}[4]{\begin{tikzpicture}[baseline=-1mm,scale=.59,line width=.76pt]\draw (0,-1.08)--(0,1.08);\draw (-1.10,0)--(1.10,0);\node[above] at (0,1.08){#1};\node[below] at (0,-1.08){#2};\node[left] at (-1.10,0){#3};\node[right] at (1.10,0){#4};\end{tikzpicture}}
+\FullTask{\textbf{Fischer四选一：}以下结构是一个单一构型的\ce{ClCH2-CH(CH3)-CH2CH3}经\ce{Br2},\ $h\nu$后的一溴代候选产物。\textbf{哪个结构不能从给定起始构型产生？}先比较未被取代的原手性中心构型，再考虑新生成的自由基中心。\\[2mm]
+起始物：\FOne{\ce{CH2Cl}}{\ce{CH2CH3}}{H}{\ce{CH3}}\\[2mm]
+\begin{tabular}{@{}c@{\quad}c@{\quad}c@{\quad}c@{}}\textbf{A}&\textbf{B}&\textbf{C}&\textbf{D}\\[2mm]
+\FTwo{\ce{CH2Cl}}{\ce{CH3}}{\ce{CH3}}{H}{H}{\ce{Br}} & \FOne{\ce{CH2Cl}}{\ce{CH2CH3}}{\ce{CH3}}{\ce{Br}} & \FTwo{\ce{CH2Cl}}{\ce{CH3}}{H}{\ce{CH3}}{\ce{Br}}{H} & \FOne{\ce{CH2Cl}}{\ce{CH2CH3}}{\ce{Br}}{\ce{CH3}}\end{tabular}}{\textbf{A。}在C3溴代时，原C2未经历自由基平面化，应保留其真实空间构型；A改变了原C2的构型，C仍保留。B、D是在C2本身抽氢后形成近似平面的自由基，溴可由两面接近。}{4.2cm}
+\FullTask{\textbf{分馏与旋光：}从单一构型\ce{(S)-ClCH2-CH(CH3)-CH2-CH3}出发，在常规非手性条件下进行一氯代。按\textbf{普通非手性色谱/蒸馏不能分离对映体、可区分非对映体}的课程假设，分别从C1、C2、C3、C4和C2侧链甲基氯代，画出所有组成不同或立体不同的产物；问理论上有几种馏分、哪些有净旋光性。}{\textbf{理论上6种馏分，其中4种可具有净旋光性。}\\[1mm]
+C1：\ce{Cl2CH-CH(CH3)-CH2CH3}，原C2构型保留，旋光。\\
+C2：\ce{ClCH2-C(Cl)(CH3)-CH2CH3}，原手性中心经历平面自由基，形成一对对映体的混合物，样品不旋光（合计1个馏分）。\\
+C3：\ce{ClCH2-CH(CH3)-CH(Cl)-CH3}，保留原C2构型并产生新的C3中心，出现两种非对映体（2个馏分，两者各可旋光）。\\[1mm]
+\textbf{C3两种代表性Fischer结构（原C2保持不变）：}\\[1mm]
+\FTwo{\ce{CH2Cl}}{\ce{CH3}}{H}{\ce{CH3}}{\ce{Cl}}{H}\quad\FTwo{\ce{CH2Cl}}{\ce{CH3}}{H}{\ce{CH3}}{H}{\ce{Cl}}\\[1mm]
+C4：\ce{ClCH2-CH(CH3)-CH2-CH2Cl}，原中心保留，旋光。\\
+侧链甲基：\ce{ClCH2-CH(CH2Cl)-CH2CH3}，两个\ce{CH2Cl}取代基相同，中心不再手性，不旋光。\\
+本题按课程理想化自由基模型讨论；若考虑实验选择性、分离工艺或自由基立体记忆，不能将理论计数等同于实测馏分数。}{11.2cm}
+
+\end{document}

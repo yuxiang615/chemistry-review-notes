@@ -41,6 +41,19 @@ chemistry-review-notes/
         └── layout-snippets.tex   # Fischer/Newman/表格等可复用排版片段
 ```
 
+## 2026-10：第三章经验升级（先读这一组）
+
+本仓库现已加入**真实项目迭代中的失败归因**，避免再次把“少文字”误读成“删规则”，或把“优先表格化”误读成“所有题反复表头”。下次开工除了根目录 SKILL，还应阅读：
+
+- [第三章 v0.2–v0.7 失败分析](docs/FAILURE_ANALYSIS_ALKENES.md) — 哪些原指令不足、如何防止跑偏。
+- [绘图与 LaTeX 技术路线](docs/DRAWING_AND_LATEX_PIPELINE.md) — RDKit/Ketcher/chemfig/mhchem 各司其职；条件写在箭头上；人工检查结构与分页。
+- [反应练习题设计](docs/EXERCISE_DESIGN_REACTIONS.md) — 完整默写、给条件迁移和机理真画是三种不同动作。
+- [旧章真实成品对照案例](examples/alkanes-cycloalkanes/CASE_STUDY.md) 与 [立体化学案例](examples/stereochemistry/CASE_STUDY.md)。
+- [烯烃可复现绘图与双版本范例](examples/alkenes/README.md)。
+- [素材归档状态与工具资源](docs/PROVENANCE_AND_ASSETS.md) — **未实际上传的 PDF 不得视为已入库**。
+
+**注意**：原根规范被此处新版经验补强；学生成品不显示内部 QA。用户认可 v0.5 风格为烯烃版式基线，v0.7 是后续迭代参考，仍不等于全部复杂课堂题已独立化学复核。
+
 ## 当前基准
 
 已完成并验证过的两类范式：
